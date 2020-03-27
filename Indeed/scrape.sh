@@ -8,4 +8,4 @@
 
 source $WORKON_HOME/indeed_scrape/bin/activate
 cd ~/Documents/Indeed_scrapper/Indeed/scraper_app
-scrapy crawl Indeed
+scrapy crawl indeed

@@ -12,6 +12,7 @@ Scrapy spider part - it actually performs scraping.
 from scrapy.spiders import Spider
 from scrapy.selector import Selector
 #LoaderXPathItem
+from scrapy.http import Request
 from scrapy.loader import ItemLoader
 from scrapy.loader.processors import Join, MapCompose
 
@@ -25,7 +26,7 @@ class IndeedSpider(Spider):
     name = "indeed"
     allowed_domains = ["indeed.fr"]
     #On commence avec une page spécifique les data scientists en France
-    start_urls = ["https://www.indeed.fr/France-Emplois-data-scientist"]
+    start_urls = ["https://www.indeed.fr/jobs?q=data+scientist&l=France&fromage=last&start="+str(10*i) for i in range(10)]
 
     #'div', class_ = "jobsearch-SerpJobCard")
     offer_list_xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "jobsearch-SerpJobCard", " " ))]'

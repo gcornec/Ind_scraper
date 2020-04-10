@@ -37,7 +37,7 @@ def create_offers_table(engine):
 
 class Offers(DeclarativeBase):
     """Sqlalchemy deals model"""
-    __tablename__ = "offers_1"
+    __tablename__ = "offers_2"
 
     id = Column(Integer, primary_key=True)
     title = Column('title', String)
@@ -46,3 +46,4 @@ class Offers(DeclarativeBase):
     employer = Column('employer', String, nullable=True)
     employer_rate = Column('employer_rate', String, nullable=True )
     salary = Column('salary', String, nullable=True)
+    url = Column('url', String, nullable=True)

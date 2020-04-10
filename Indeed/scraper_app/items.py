@@ -19,4 +19,4 @@ class IndeedOffer(Item):
     employer = Field()
     employer_rate = Field()
     salary = Field()
-    #url = Field()
+    url = Field()

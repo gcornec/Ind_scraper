@@ -26,22 +26,25 @@ class IndeedSpider(Spider):
     name = "indeed"
     allowed_domains = ["indeed.fr"]
     #On commence avec une page spécifique les data scientists en France
-    start_urls = ["https://www.indeed.fr/jobs?q=data+scientist&l=France&fromage=last&start="+str(10*i) for i in range(10)]
+    start_urls = ["https://www.indeed.fr/France-Emplois-data-scientist"]
+                    #"https://www.indeed.fr/jobs?q=data+scientist&l=France&fromage=last&start="+str(10*i) for i in range(10)]
 
     #'div', class_ = "jobsearch-SerpJobCard")
     offer_list_xpath = '//*[contains(concat( " ", @class, " " ), concat( " ", "jobsearch-SerpJobCard", " " ))]'
     item_fields = {
         #.find('div', class_ = 'title').a["title"]
-        'title': './/div[@class="title"]/a/text()',
+        'title': './/div[@class="title"]/a/@title/text()',
         #offre.find('div', class_ = "sjcl").find("span", class_ = "company").a["href"][5:]
-        'employer': './/*[contains(concat( " ", @class, " " ), concat( " ", "company", " " ))]/text()',
+        'employer': './/*[contains(concat( " ", @class, " " ), concat( " ", "company", " " ))]/a/text()',
         #float(offre.find('div', class_ = "sjcl").find("span", class_ = "ratingsContent").text[1:4].replace(',','.'))
         'employer_rate': './/*[contains(concat( " ", @class, " " ), concat( " ", "ratingsContent", " " ))]/text()',
         #offre.find('div', class_ = "sjcl").find("div", class_ = "location").text
         #OU offre.find('div', class_ = "sjcl").find("span", class_ = "location").text
         'location': './/*[contains(concat( " ", @class, " " ), concat( " ", "accessible-contrast-color-location", " " ))]/text()',
         #offre.find('div', class_ = "salarySnippet").find("span", class_ = "salaryText").text[1:]
-        'salary': './/*[contains(concat( " ", @class, " " ), concat( " ", "salaryText", " " ))]/text()'
+        'salary': './/*[contains(concat( " ", @class, " " ), concat( " ", "salaryText", " " ))]/text()',
+
+        'url': './/div[@class="title"]/a/@href'
 
         #'original_price': './/a/div[@class="deal-prices"]/div[@class="deal-strikethrough-price"]/div[@class="strikethrough-wrapper"]/text()',
         #'price': './/a/div[@class="deal-prices"]/div[@class="deal-price"]/text()',
@@ -66,7 +69,7 @@ class IndeedSpider(Spider):
 
         # iterate over deals
         for offer in selector.xpath(self.offer_list_xpath):
-            print("offer", offer)
+            #print("offer", offer)
             loader = ItemLoader(IndeedOffer(), selector=offer)
 
             # define processors
@@ -75,5 +78,7 @@ class IndeedSpider(Spider):
 
             # iterate over fields and add xpaths to the loader
             for field, xpath in self.item_fields.items():
+                print("field", field)
+                print("xpath", xpath)
                 loader.add_xpath(field, xpath)
             yield loader.load_item()
